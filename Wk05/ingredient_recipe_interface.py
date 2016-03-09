@@ -20,11 +20,11 @@ class Ingredient(object):
 class Recipe(object):
     """The Recipe object containing the ingredients"""
     
-    def __init__(self, name, ingredients):
+    def __init__(self, name, ingredients,):
         self.name = name
         self.ingredients = ingredients
         
-        
+
     def get_nutrition(self):
         """Returns the nutritional information for the recipe"""
         nutrition = [0, 0, 0]
@@ -33,3 +33,21 @@ class Recipe(object):
             nutrition[1] += amount * ingredient.protein
             nutrition[2] += amount * ingredient.fat
         return nutrition
+
+
+    @property  
+    def nutrition(self):
+        info = self.get_nutrition()
+        nutrients = {}
+        nutrients['carbs'] = info[0]
+        nutrients['protein'] = info[1]
+        nutrients['fat'] = info[2]
+        return nutrients
+
+
+
+
+
+
+
+

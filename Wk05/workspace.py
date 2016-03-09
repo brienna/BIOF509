@@ -1,3 +1,6 @@
+from ingredient_recipe_interface import Ingredient, Recipe
+
+
 bread = Recipe('Bread', [(820, Ingredient('Flour', 0.77, 0.10, 0.01)), 
                          (30, Ingredient('Oil', 0, 0, 1)), 
                          (36, Ingredient('Sugar', 1, 0, 0)), 
