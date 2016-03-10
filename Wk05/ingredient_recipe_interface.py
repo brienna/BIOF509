@@ -49,11 +49,12 @@ class Recipe(object):
 
     def get_nutrition(self):
         """Returns the nutritional information for the recipe"""
-        nutrition = [0, 0, 0, 0]
+        nutrition = [0, 0, 0]
         carbs = 0
         protein = 0
         fat = 0
         cholesterol = 0
+        nutrition_cholesterol = 0
         for amount, ingredient in self.ingredients:
             # if ingredient is a Recipe instance
             if isinstance(ingredient, Recipe):  
@@ -68,7 +69,7 @@ class Recipe(object):
                 nutrition[0] += amount * carbs
                 nutrition[1] += amount * protein
                 nutrition[2] += amount * fat
-                nutrition[3] += amount * cholesterol
+                nutrition_cholesterol += amount * cholesterol
             # if ingredient is an Ingredient instance
             else:
                 # print('ingredient: ', ingredient)
@@ -76,7 +77,11 @@ class Recipe(object):
                 nutrition[1] += amount * ingredient.protein
                 nutrition[2] += amount * ingredient.fat
                 if hasattr(ingredient, 'cholesterol'):
-                        nutrition[3] += amount * ingredient.cholesterol
+                    nutrition_cholesterol += amount * ingredient.cholesterol
+
+        # if cholesterol nutrition info has been supplied, append to list
+        if nutrition_cholesterol > 0:  
+            nutrition.append(nutrition_cholesterol)
         return nutrition
 
 
@@ -87,9 +92,9 @@ class Recipe(object):
         nutrients['carbs'] = info[0]
         nutrients['protein'] = info[1]
         nutrients['fat'] = info[2]
-        # note: currently there is no way to know whether a 'cholesterol': 0 
-        # means no cholesterol content or no provided cholesterol values
-        nutrients['cholesterol'] = info[3]
+        # if info consists of more than carbs, protein, fat, add to nutrients dict
+        if len(info) > 3:  
+            nutrients['cholesterol'] = info[3]
         return nutrients
 
 
