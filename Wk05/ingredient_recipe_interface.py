@@ -49,11 +49,34 @@ class Recipe(object):
 
     def get_nutrition(self):
         """Returns the nutritional information for the recipe"""
-        nutrition = [0, 0, 0]
+        nutrition = [0, 0, 0, 0]
+        carbs = 0
+        protein = 0
+        fat = 0
+        cholesterol = 0
         for amount, ingredient in self.ingredients:
-            nutrition[0] += amount * ingredient.carbs
-            nutrition[1] += amount * ingredient.protein
-            nutrition[2] += amount * ingredient.fat
+            # if ingredient is a Recipe instance
+            if isinstance(ingredient, Recipe):  
+                ingredient = ingredient.ingredients  # update ingredient to recipe's ingredients
+                for amt, ing in ingredient:
+                    # print('ingredient within recipe: ', ing)
+                    carbs += amt * ing.carbs
+                    protein += amt * ing.protein
+                    fat += amt * ing.fat
+                    if hasattr(ing, 'cholesterol'):
+                        cholesterol += amt * ing.cholesterol
+                nutrition[0] += amount * carbs
+                nutrition[1] += amount * protein
+                nutrition[2] += amount * fat
+                nutrition[3] += amount * cholesterol
+            # if ingredient is an Ingredient instance
+            else:
+                # print('ingredient: ', ingredient)
+                nutrition[0] += amount * ingredient.carbs
+                nutrition[1] += amount * ingredient.protein
+                nutrition[2] += amount * ingredient.fat
+                if hasattr(ingredient, 'cholesterol'):
+                        nutrition[3] += amount * ingredient.cholesterol
         return nutrition
 
 
@@ -64,6 +87,9 @@ class Recipe(object):
         nutrients['carbs'] = info[0]
         nutrients['protein'] = info[1]
         nutrients['fat'] = info[2]
+        # note: currently there is no way to know whether a 'cholesterol': 0 
+        # means no cholesterol content or no provided cholesterol values
+        nutrients['cholesterol'] = info[3]
         return nutrients
 
 
