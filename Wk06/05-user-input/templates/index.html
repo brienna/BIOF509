@@ -1,0 +1,18 @@
+<html>
+<head>
+	<title>Hello</title>
+	<style>
+	h1 { color: red;}
+	</style>
+
+</head>
+<body>
+<h1>Hello, {{ name }}</h1>
+
+<form method="POST" action="/">
+    {{ form.hidden_tag() }}
+    {{ form.name.label }} {{ form.name(size=20) }}
+    <input type="submit" value="Go">
+</form>
+</body>
+</html>
