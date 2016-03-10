@@ -6,7 +6,7 @@ class Ingredient(object):
 
         amounts = []
         nutrients_tracked = ['carbs', 'protein', 'fat', 'cholesterol']  
-        
+
         for arg in args:
             # if argument is a dict, set keys & values as instance attributes
             if isinstance(arg, dict):
@@ -41,7 +41,11 @@ class Recipe(object):
     def __init__(self, name, ingredients,):
         self.name = name
         self.ingredients = ingredients
-        
+    
+
+    def __repr__(self):
+        return 'Recipe({0}, {1})'.format(self.name, self.ingredients)
+
 
     def get_nutrition(self):
         """Returns the nutritional information for the recipe"""
