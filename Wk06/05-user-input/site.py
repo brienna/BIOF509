@@ -13,20 +13,20 @@ from wtforms.validators import DataRequired
 
 class MyForm(Form):
     name = StringField('name', validators=[DataRequired()])
-	
-	
+    
+    
 @app.route('/', methods=('GET', 'POST'))
 def index():
-	form = MyForm()
-	if form.validate_on_submit():
-		name = form.name.data
-	else:
-		name = 'stranger'
-	return render_template('index.html', form=form, name=name)
-	
+    form = MyForm()
+    if form.validate_on_submit():
+        name = form.name.data
+    else:
+        name = 'stranger'
+    return render_template('index.html', form=form, name=name)
+    
 @app.route('/custom/<custom>/')
 def custom(custom):
-	return render_template('custom.html', custom=custom)
-	
+    return render_template('custom.html', custom=custom)
+    
 if __name__ == '__main__':
-	app.run(debug=True)
+    app.run(debug=True)
