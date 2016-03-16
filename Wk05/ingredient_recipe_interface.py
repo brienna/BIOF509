@@ -1,38 +1,35 @@
 class Ingredient(object):
     """The ingredient object that contains nutritional information"""
-    
+
     def __init__(self, name, *args):
         self.name = name
 
-        amounts = []
-        nutrients_tracked = ['carbs', 'protein', 'fat', 'cholesterol']  
+        values = []
+        nutrients = ['carbs', 'protein', 'fat', 'cholesterol']
 
         for arg in args:
-            # if argument is a dict, set keys & values as instance attributes
+            # if argument is a dict, assign it as instance attribute
             if isinstance(arg, dict):
-                for key in arg.keys():
-                    setattr(self, key, arg[key])  # self.key = arg[key] doesn't work?
+                self.nutrition = arg
             # if argument isn't a dict, add argument to list
-            else: 
-                amounts.append(arg)
+            else:
+                values.append(arg)
 
         # if non-dict arguments were added to list, set them as instance attributes
-        if len(amounts) > 0:
-            for nutrient, amount in zip(nutrients_tracked, amounts):
-                setattr(self, nutrient, amount)
+        if len(values) > 0:
+            self.nutrition = {}
+            for nutrient, value in zip(nutrients, values):
+                self.nutrition[nutrient] = value
 
-        
+
     def __repr__(self):
         # if instance contains 'cholesterol' attribute, include it in str representation
-        if hasattr(self, 'cholesterol'):
-            return 'Ingredient({0}, {1}, {2}, {3}, {4})'.format(self.name, self.carbs, self.protein, self.fat, self.cholesterol)
-        else:
-            return 'Ingredient({0}, {1}, {2}, {3})'.format(self.name, self.carbs, self.protein, self.fat)
+        return 'Ingredient({0}, {1})'.format(self.name, self.nutrition)
 
 
     def get_nutrition(self):
         """Returns the nutritional information for the ingredient"""
-        return (self.carbs, self.protein, self.fat)
+        return (self.nutrition)
     
 
 class Recipe(object):
