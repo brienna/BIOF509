@@ -7,18 +7,19 @@
 
 </head>
 <body>
-<h1>Hello, {{ name }}</h1>
+<h1>Hello, {{ first_name }}</h1>
 
 <form method="POST" action="/">
     {{ form.hidden_tag() }}
-    {{ form.name.label }} {{ form.name(size=20) }}
+    {{ form.first_name.label }} {{ form.first_name(size=20) }}
+    {{ form.last_name.label }} {{ form.last_name(size=20) }}
     <input type="submit" value="Go">
 </form>
 
 <h2>Previous Visitors</h2>
 <ul>
 {% for visitor in previous_visitors %}
-    <li>{{ visitor.name }}</li>
+    <li>{{ visitor.first_name + " " + visitor.last_name }}</li>
 {% endfor %}
 </ul>
 </body>
