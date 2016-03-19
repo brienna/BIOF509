@@ -1,3 +1,5 @@
+import numpy as np
+
 class Model(object):
     def __init__(self, algo, algo_kwargs, weights=[0.1, 0.1], size=100, repeats=200):
         self.algo = algo
@@ -30,26 +32,26 @@ class Model(object):
         self.arm_choice = np.array(arm_choice)
         self.reward = np.array(reward)
         
-    def plot_arm_frequency(self, ax):
+    def plot_arm_frequency(self, ax, colour='black'):
         """Plot the frequency with which the second arm is chosen
         NOTE: Currently only works for two arms"""
-        ax.plot(self.arm_choice.mean(axis=0), 'k.')
+        ax.plot(self.arm_choice.mean(axis=0), 'k.', color=colour)
         ax.set_title('Frequency of arm choice')
         ax.set_xlabel('Trial')
         ax.set_ylabel('Frequency')
         return ax
     
-    def plot_reward(self, ax):
+    def plot_reward(self, ax, colour='black'):
         """Plot the average reward for each trial across all simulations"""
-        ax.plot(self.reward.mean(axis=0), 'k.')
+        ax.plot(self.reward.mean(axis=0), 'k.', color=colour)
         ax.set_title('Reward')
         ax.set_xlabel('Trial')
         ax.set_ylabel('Reward')
         return ax
     
-    def plot_cumulative_reward(self, ax):
+    def plot_cumulative_reward(self, ax, colour='black'):
         """Plot the cumulative reward across all simulations"""
-        ax.plot(np.cumsum(self.reward, axis=1).mean(axis=0), 'k.')
+        ax.plot(np.cumsum(self.reward, axis=1).mean(axis=0), 'k.', color=colour)
         ax.set_title('Cumulative Reward')
         ax.set_xlabel('Trial')
         ax.set_ylabel('Cumulative Reward')
