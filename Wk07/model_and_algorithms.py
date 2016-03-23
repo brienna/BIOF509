@@ -10,7 +10,7 @@ class Model(object):
         
     def run_simulation(self):
         """Run a single simulation, recording the performance"""
-        algo = self.algo(**self.algo_kwargs)
+        algo = self.algo(**self.algo_kwargs)  # instantiate algorithm object
         arm_choice_record = []
         reward_record = []
         for i in range(self.size):
@@ -60,7 +60,7 @@ class Model(object):
 
 class RCT(object):
     def __init__(self, n_arms, epsilon):
-        self._epsilon = epsilon
+        self._epsilon = epsilon  # self.epsilon is assigned via @property
         self.counts = [0] * n_arms
         self.values = [0] * n_arms
         self.n_arms = n_arms
@@ -68,11 +68,13 @@ class RCT(object):
     def choose_arm(self):
         """Choose an arm"""
         if np.random.random() > self.epsilon:
+            # exploit (use best arm)
             weights = np.array(self.values)
             weights = weights == weights.max()
             weights = weights / weights.sum()
             return np.random.choice(np.arange(self.n_arms), p=weights)
         else:
+            # explore (test all arms)
             return np.random.randint(self.n_arms)
         
     
@@ -98,4 +100,18 @@ class EpsilonGreedy(RCT):
     def epsilon(self):
         return self._epsilon
 
+
+# When we have very little information on the relative performance of the two 
+# arms a high exploration rate quickly provides us with additional information. 
+# However, after several hundred trials we are relatively confident in the 
+# performance of each arm and a high exploration rate is detrimental as we will 
+# be choosing an arm we know to be inferior at a high rate. A better approach 
+# would be to reduce the exploration rate as we acquire more information.
+class EpsilonDecrease(EpsilonGreedy):
+
+    @property
+    def epsilon(self):
+        """Gradually reduce the value of epsilon over time"""
+        total = sum(self.counts)
+        return float(self._epsilon) / (total + float(self._epsilon))
 
